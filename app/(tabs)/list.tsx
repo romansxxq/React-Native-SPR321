@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity, Alert } from 'react-native';
+import { View, Image, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity, Alert, ViewStyle } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 const api = "https://fakestoreapi.com/products";
@@ -18,7 +18,7 @@ type ItemProps = {
 }
 
 const Item = ({ item, onPress }: ItemProps) => (
-  <TouchableOpacity style={styles.card} onPress={() => onPress(item)}>
+  <TouchableOpacity style={item.price < 50 ? styles.cheap : styles.card} onPress={() => onPress(item)}>
     <Image source={{ uri: item.image }} style={styles.image} />
     <View style={styles.detailsContainer}>
       <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
@@ -61,24 +61,30 @@ const App = () => {
     </SafeAreaProvider>);
 }
 
+const baseCard: ViewStyle = {
+  backgroundColor: "#fff",
+  borderRadius: 10,
+  padding: 10,
+  marginVertical: 8,
+  marginHorizontal: 16,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+  elevation: 3,
+  flexDirection: "row",
+  alignItems: "center",
+
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
   },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 10,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    flexDirection: "row",
-    alignItems: "center",
+  card: baseCard,
+  cheap: {
+    ...baseCard,
+    backgroundColor: "#e0f7fa",
   },
   image: {
     width: 80,
