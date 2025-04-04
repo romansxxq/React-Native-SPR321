@@ -1,44 +1,139 @@
-import { useRef, useState } from "react";
-import { Alert, Button, Text, TextInput, View } from "react-native";
-import { StyleSheet } from "react-native";
+import { useState } from "react";
+import { Alert, Button, Text, View, StyleSheet } from "react-native";
 
 export default function Index() {
+   const [count, setCount] = useState(0);
 
-  const [backColor, setBackColor] = useState("white");
-  const [text, setText] = useState("");
-  // const textRef = useRef(null);
+  const handlePress = () => {
+    Alert.alert(
+      'Питання №1',
+      "Я люблю бути в центрі уваги і легко заводжу нові знайомства.",
+      [
+        {
+          text: "не зовсім про мене",
+          onPress: () => {
+            setCount(count + 3);
+            showSecondAlert();
+          },
+        },
+        {
+          text: "інколи про мене",
+          onPress: () => {
+            setCount(count + 2);
+            showSecondAlert();
+          },
+        },
+        {
+          text: "точно про мене",
+          onPress: () => {
+            setCount(count + 1);
+            showSecondAlert();
+          },
+        },
+      ]
+    );
+  };
+
+  const showSecondAlert = () => {
+    Alert.alert(
+      "Питання №2",
+      "Я часто переживаю через дрібниці і довго думаю над своїми помилками.",
+      [
+        {
+          text: "не зовсім про мене",
+          onPress: () => {
+            setCount(count + 3);
+            showThirdAlert();
+          }
+        },
+        {
+          text: "інколи про мене",
+          onPress: () => {
+            setCount(count + 2);
+            showThirdAlert();
+          }
+        },
+        {
+          text: "точно про мене",
+          onPress: () => {
+            setCount(count + 1);
+            showThirdAlert();
+          }
+        },
+      ]
+    );
+  };
+
+  const showThirdAlert = () => {
+    Alert.alert(
+      "Питання №3",
+      "Мені важко швидко переключатися між завданнями і я люблю працювати спокійно, без поспіху.",
+      [
+        {
+          text: "не зовсім про мене",
+          onPress: () => {
+            setCount(count + 3);
+            showResultAlert();
+          }
+        },
+        {
+          text: "інколи про мене",
+          onPress: () => {
+            setCount(count + 2);
+            showResultAlert();
+          }
+        },
+        {
+          text: "точно про мене",
+          onPress: () => {
+            setCount(count + 1);
+            showResultAlert();
+          }
+        },
+      ]
+    );
+  };
+  
+  const showResultAlert = () => {
+    let resText = "невідомо";
+    if (count < 4) {
+      resText = "Сангвінік";
+    } else if (count >= 4 && count <= 6) {
+      resText = "Холерик";
+    } else if (count > 6 && count <= 8) {
+      resText = "Меланхолік";
+    } else if (count > 8) {
+      resText = "Флегматик";
+    }
+
+    Alert.alert(
+      "Результат: " + count + " балів",
+      "Ви - " + resText,
+      [
+        {
+          text: "Пройти тест ще раз",
+          onPress: () => {
+            setCount(0);
+            handlePress();
+          }
+        },
+        {
+          text: "Ок",
+          onPress: () => {
+            setCount(0);
+          }
+        },
+      ]
+    );
+  };
+
+  const backColor = "white";
 
   return (
     <View style={{ ...styles.container, backgroundColor: backColor }}>
-      <Text style={styles.text}>Welcome to React Native</Text>
+      <Text style={styles.text}>Тест</Text>
 
-      <Text>Color:</Text>
-      <TextInput style={styles.input} value={text} onChangeText={setText}></TextInput>
-
-      <Button
-        title="Click Me"
-        onPress={() => {
-          // alert("Button Pressed!");
-          Alert.alert("Button Pressed!", "Do you want to change color?", [
-            {
-              text: "Reset",
-              onPress: () => setBackColor("white"),
-            },
-            {
-              text: "Yes",
-              onPress: () => setBackColor(text || "lightgray"),
-            },
-            {
-              text: "Ignore",
-              onPress: () => console.log("Ignore Pressed"),
-            },
-            {
-              text: "Fourth",
-              onPress: () => console.log("4-th Pressed"),
-            },
-          ]);
-        }}
-      />
+      <Button title="Start" onPress={handlePress} />
     </View>
   );
 }
@@ -53,17 +148,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "black",
   },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    width: "80%",
-  },
-  button: {
-    backgroundColor: "blue",
-    padding: 10,
-    borderRadius: 5,
-  }
 });
